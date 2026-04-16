@@ -1,11 +1,38 @@
-.project
-.classpath
-.settings/
-bin/
+# MoodTune .gitignore
+
+# Build output
+build/
+
+# Node (if used for tooling)
+node_modules/
+npm-debug.log*
+package-lock.json
+
+# OS files
 .DS_Store
 Thumbs.db
-node_modules/
-*.log
-.env
-dist/
+desktop.ini
+
+# IDE files
 .vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Backup files
+*.bak
+*.backup
+
+# Jenkins workspace
+.jenkins/
+workspace/
+
+# Logs
+*.log
+logs/
+
+# Env files (secrets)
+.env
+.env.local
+.env.production

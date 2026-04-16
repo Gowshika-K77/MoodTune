@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>MoodTune – About</title>
+<link rel="stylesheet" href="../css/base.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,500;12..96,700;12..96,800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+.about-hero{text-align:center;margin-bottom:3.5rem;animation:heroIn .8s both}
+.about-hero h1{font-family:var(--fh);font-size:2.5rem;font-weight:800;margin-bottom:.7rem}
+.about-hero p{color:var(--text2);font-size:1rem;max-width:480px;margin:0 auto}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:3rem;animation:fadeUp .6s .1s both}
+.about-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:1.6rem;transition:transform .2s,border-color .2s}
+.about-card:hover{transform:translateY(-4px);border-color:rgba(108,63,245,.3)}
+.about-card .icon{font-size:2.2rem;margin-bottom:.9rem}
+.about-card h3{font-family:var(--fh);font-size:1.05rem;font-weight:700;margin-bottom:.5rem}
+.about-card p{font-size:.83rem;color:var(--text2);line-height:1.55}
+.tech-stack{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2rem;margin-bottom:2rem;animation:fadeUp .6s .2s both}
+.tech-stack h2{font-family:var(--fh);font-size:1.3rem;font-weight:700;margin-bottom:1.2rem}
+.tech-row{display:flex;gap:.5rem;flex-wrap:wrap}
+.tech-chip{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:.4rem 1rem;font-size:.78rem;color:var(--text2)}
+.cta-section{text-align:center;padding:3rem 1rem;animation:fadeUp .6s .3s both}
+.cta-btn{display:inline-block;padding:.85rem 2.5rem;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-radius:40px;font-family:var(--fh);font-weight:700;font-size:1rem;text-decoration:none;box-shadow:0 6px 28px rgba(108,63,245,.4);transition:transform .2s,box-shadow .2s}
+.cta-btn:hover{transform:translateY(-3px);box-shadow:0 10px 36px rgba(108,63,245,.6)}
+</style>
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
+<canvas id="noteCanvas"></canvas>
+<div id="toast"></div>
+
+<nav class="top-nav">
+  <a class="logo" href="../index.html">
+    <div class="logo-orb">🎵</div>
+    <span class="logo-name">MoodTune</span>
+  </a>
+  <div class="nav-right">
+    <a href="library.html" class="nav-link-btn">📚 Library</a>
+    <a href="search.html"  class="nav-link-btn">🔍 Search</a>
+    <a href="about.html"   class="nav-link-btn" style="border-color:var(--accent);color:var(--accent)">ℹ️ About</a>
+    <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
+  </div>
+</nav>
+
+<div class="main">
+  <div class="about-hero">
+    <div style="font-size:4rem;margin-bottom:1rem">🎵</div>
+    <h1>About MoodTune</h1>
+    <p>A mood-based music player for English & K-Pop fans. No ads. No accounts. Just music.</p>
+  </div>
+
+  <div class="cards-grid">
+    <div class="about-card">
+      <div class="icon">🎭</div>
+      <h3>8 Mood Categories</h3>
+      <p>Happy, Sad, Energetic, Calm, Romantic, Angry, Focused, and Nostalgic — each with 25 hand-curated songs.</p>
+    </div>
+    <div class="about-card">
+      <div class="icon">🌍</div>
+      <h3>3 Languages</h3>
+      <p>English hits and K-Pop bangers with curated playlists.</p>
+    </div>
+    <div class="about-card">
+      <div class="icon">▶️</div>
+      <h3>Spotify-Style Player</h3>
+      <p>Full-featured player with progress bar, prev/next controls, volume, shuffle, and equalizer animation.</p>
+    </div>
+    <div class="about-card">
+      <div class="icon">🚫</div>
+      <h3>No Ads. No Login.</h3>
+      <p>Pure music experience. No trackers, no pop-ups, no accounts required. Open and play instantly.</p>
+    </div>
+    <div class="about-card">
+      <div class="icon">🔍</div>
+      <h3>Smart Search</h3>
+      <p>Search across all 200 songs by title, artist, or mood. Filter by language instantly.</p>
+    </div>
+    <div class="about-card">
+      <div class="icon">🎨</div>
+      <h3>Dark & Light Mode</h3>
+      <p>Beautiful animated background with stars, aurora, and floating music notes. Supports dark and light themes.</p>
+    </div>
+  </div>
+
+  <div class="tech-stack">
+    <h2>⚙️ Tech Stack</h2>
+    <div class="tech-row">
+      <span class="tech-chip">HTML5</span>
+      <span class="tech-chip">CSS3</span>
+      <span class="tech-chip">Vanilla JavaScript</span>
+      <span class="tech-chip">YouTube IFrame API</span>
+      <span class="tech-chip">Canvas API</span>
+      <span class="tech-chip">CSS Grid & Flexbox</span>
+      <span class="tech-chip">sessionStorage</span>
+      <span class="tech-chip">CSS Custom Properties</span>
+    </div>
+    <br/>
+    <h2>🔧 DevOps Stack</h2>
+    <div class="tech-row">
+      <span class="tech-chip">Git (Version Control)</span>
+      <span class="tech-chip">Jenkins (CI/CD Pipeline)</span>
+      <span class="tech-chip">Nginx (Web Server)</span>
+      <span class="tech-chip">Docker (Optional)</span>
+      <span class="tech-chip">Jenkinsfile (Pipeline as Code)</span>
+    </div>
+  </div>
+
+  <div class="cta-section">
+    <h2 style="font-family:var(--fh);font-size:1.6rem;font-weight:800;margin-bottom:.7rem">Ready to Feel the Music?</h2>
+    <p style="color:var(--text2);margin-bottom:1.5rem">Pick a mood and start your playlist instantly.</p>
+    <a href="../index.html" class="cta-btn">🎵 Pick Your Mood</a>
+  </div>
+</div>
+
+<div id="ytHolder" style="position:fixed;bottom:0;left:0;width:2px;height:2px;opacity:0;pointer-events:none;z-index:-1"></div>
+
+<script src="../js/db.js"></script>
+<script src="../js/player.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/bg.js"></script>
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+  applyTheme(); initBg(); initNotes(); loadYT();
+});
+</script>
+</body>
+</html>

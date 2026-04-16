@@ -1,51 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MoodTune – Your mood. Your music.</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>MoodTune – Feel the Music</title>
+<link rel="stylesheet" href="css/base.css"/>
+<link rel="stylesheet" href="css/home.css"/>
 </head>
 <body>
+<canvas id="bgCanvas"></canvas>
+<canvas id="noteCanvas"></canvas>
+<div id="toast"></div>
 
-  <canvas id="bgCanvas"></canvas>
-  <canvas id="noteCanvas"></canvas>
+<nav class="top-nav">
+  <div class="logo" onclick="window.location.href='index.html'">
+    <div class="logo-orb">🎵</div>
+    <span class="logo-name">MoodTune</span>
+  </div>
+  <div class="nav-right">
+    <span class="nav-pill">🎵 80 Songs · 8 Moods</span>
+    <a href="pages/library.html"  class="nav-link-btn">📚 Library</a>
+    <a href="pages/search.html"   class="nav-link-btn">🔍 Search</a>
+    <a href="pages/about.html"    class="nav-link-btn">ℹ️ About</a>
+    <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
+  </div>
+</nav>
 
-  <div class="wrap">
-
-    <header>
-      <div class="logo">
-        <div class="logo-orb">🎵</div>
-        <span class="logo-text">MoodTune</span>
-      </div>
-      <p class="tagline">Your mood. Your music. Every time.</p>
-    </header>
-
-    <p class="q">How are you feeling right now?</p>
-
-    <div class="grid">
-      <div class="card m-happy"     onclick="pick(this,'happy')">    <span class="emoji">😄</span><span class="label">Happy</span></div>
-      <div class="card m-sad"       onclick="pick(this,'sad')">      <span class="emoji">😢</span><span class="label">Sad</span></div>
-      <div class="card m-energetic" onclick="pick(this,'energetic')"><span class="emoji">⚡</span><span class="label">Energetic</span></div>
-      <div class="card m-calm"      onclick="pick(this,'calm')">     <span class="emoji">🌊</span><span class="label">Calm</span></div>
-      <div class="card m-romantic"  onclick="pick(this,'romantic')"> <span class="emoji">❤️</span><span class="label">Romantic</span></div>
-      <div class="card m-angry"     onclick="pick(this,'angry')">    <span class="emoji">😤</span><span class="label">Angry</span></div>
-      <div class="card m-focused"   onclick="pick(this,'focused')">  <span class="emoji">🎯</span><span class="label">Focused</span></div>
-      <div class="card m-nostalgic" onclick="pick(this,'nostalgic')"><span class="emoji">🌅</span><span class="label">Nostalgic</span></div>
-    </div>
-
-    <div class="btn-wrap">
-      <button class="btn" id="btn" onclick="go()" disabled>
-        <span id="bl">✨ Generate My Playlist</span>
-        <div class="spin" id="sp"></div>
-      </button>
-    </div>
-
-    <div id="results"></div>
-
+<div class="main">
+  <div class="hero">
+    <div class="hero-eyebrow">✦ English · K-Pop · French · No Ads · Instant Play</div>
+    <h1 class="hero-title">How are you feeling<br/><span class="hero-grad">right now?</span></h1>
+    <p class="hero-sub">Pick a mood. Get 10 curated songs. Plays like Spotify.</p>
   </div>
 
-  <script src="script.js"></script>
+  <div class="mood-grid">
+    <div class="mood-card m-happy"     onclick="selectMood(this,'happy')">
+      <div class="card-glow"></div><span class="card-emoji">😊</span>
+      <div class="card-name">Happy</div><div class="card-count">10 songs</div>
+    </div>
+    <div class="mood-card m-sad"       onclick="selectMood(this,'sad')">
+      <div class="card-glow"></div><span class="card-emoji">😢</span>
+      <div class="card-name">Sad</div><div class="card-count">10 songs</div>
+    </div>
+    <div class="mood-card m-angry"     onclick="selectMood(this,'angry')">
+      <div class="card-glow"></div><span class="card-emoji">😡</span>
+      <div class="card-name">Angry</div><div class="card-count">10 songs</div>
+    </div>
+    <div class="mood-card m-calm"      onclick="selectMood(this,'calm')">
+      <div class="card-glow"></div><span class="card-emoji">😌</span>
+      <div class="card-name">Calm</div><div class="card-count">10 songs</div>
+    </div>
+    <div class="mood-card m-romantic"  onclick="selectMood(this,'romantic')">
+      <div class="card-glow"></div><span class="card-emoji">❤️</span>
+      <div class="card-name">Romantic</div><div class="card-count">10 songs</div>
+    </div>
+    <div class="mood-card m-nostalgic" onclick="selectMood(this,'nostalgic')">
+      <div class="card-glow"></div><span class="card-emoji">🕰️</span>
+      <div class="card-name">Nostalgic</div><div class="card-count">10 songs</div>
+    </div>
+    <div class="mood-card m-energetic" onclick="selectMood(this,'energetic')">
+      <div class="card-glow"></div><span class="card-emoji">⚡</span>
+      <div class="card-name">Energetic</div><div class="card-count">10 songs</div>
+    </div>
+    <div class="mood-card m-focused"   onclick="selectMood(this,'focused')">
+      <div class="card-glow"></div><span class="card-emoji">🎯</span>
+      <div class="card-name">Focused</div><div class="card-count">10 songs</div>
+    </div>
+  </div>
+
+  <div class="gen-wrap">
+    <div class="mood-display" id="moodDisplay">← Select a mood above to begin</div><br/>
+    <button class="gen-btn" id="genBtn" disabled onclick="goToPlaylist()">
+      <span id="genLabel">✨ Generate My Playlist</span>
+      <div class="spin" id="genSpin"></div>
+    </button>
+  </div>
+</div>
+
+<!-- PLAYER BAR -->
+<div class="player-bar" id="playerBar">
+  <div class="pb-left">
+    <div class="pb-cover" id="pbCover">🎵</div>
+    <div class="pb-meta">
+      <div class="pb-title"  id="pbTitle">Select a song</div>
+      <div class="pb-artist" id="pbArtist">MoodTune</div>
+    </div>
+  </div>
+  <div class="pb-centre">
+    <div class="pb-controls">
+      <button class="ctrl" onclick="playPrev()" title="Previous">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><polygon points="19,20 9,12 19,4"/><rect x="5" y="4" width="2" height="16"/></svg>
+      </button>
+      <button class="ctrl ctrl-play" id="ctrlPlay" onclick="togglePlay()">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><polygon points="5,3 19,12 5,21"/></svg>
+      </button>
+      <button class="ctrl" onclick="playNext()" title="Next">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><polygon points="5,4 15,12 5,20"/><rect x="17" y="4" width="2" height="16"/></svg>
+      </button>
+    </div>
+    <div class="pb-progress">
+      <span class="pb-time" id="timeCur">0:00</span>
+      <div class="progress-track" id="progressTrack" onclick="onSeek(event)">
+        <div class="progress-fill" id="progressFill"></div>
+        <div class="progress-knob" id="progressKnob"></div>
+      </div>
+      <span class="pb-time" id="timeDur">0:00</span>
+    </div>
+  </div>
+  <div class="pb-right">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" style="opacity:.5"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+    <input type="range" min="0" max="100" value="80" class="vol-range" oninput="setVol(this.value)"/>
+  </div>
+</div>
+
+<script src="js/db.js"></script>
+<script src="js/player.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/bg.js"></script>
+<script src="js/home.js"></script>
 </body>
 </html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>MoodTune – Search</title>
+<link rel="stylesheet" href="../css/base.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,500;12..96,700;12..96,800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+.search-hero{text-align:center;margin-bottom:3rem;animation:heroIn .7s both}
+.search-hero h1{font-family:var(--fh);font-size:2.2rem;font-weight:800;margin-bottom:.6rem}
+.search-hero p{color:var(--text2);font-size:.95rem}
+.big-search{
+  width:100%;max-width:600px;margin:0 auto 2.5rem;display:block;
+  background:var(--surface);border:2px solid var(--border2);
+  color:var(--text);border-radius:40px;padding:1rem 1.6rem;
+  font-size:1.05rem;font-family:var(--fb);outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.big-search:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(108,63,245,.15)}
+.result-count{color:var(--text3);font-size:.85rem;margin-bottom:1rem;text-align:center}
+.tag-filters{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem}
+.tag{padding:.38rem 1rem;border:1px solid var(--border);border-radius:30px;font-size:.78rem;cursor:pointer;transition:background .2s,border-color .2s;background:var(--surface2)}
+.tag:hover,.tag.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.result-mood-badge{font-size:.65rem;padding:.15rem .5rem;border-radius:12px;background:rgba(108,63,245,.12);color:#a78bfa;flex-shrink:0}
+</style>
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
+<canvas id="noteCanvas"></canvas>
+<div id="toast"></div>
+
+<nav class="top-nav">
+  <a class="logo" href="../index.html">
+    <div class="logo-orb">🎵</div>
+    <span class="logo-name">MoodTune</span>
+  </a>
+  <div class="nav-right">
+    <a href="library.html" class="nav-link-btn">📚 Library</a>
+    <a href="search.html"  class="nav-link-btn" style="border-color:var(--accent);color:var(--accent)">🔍 Search</a>
+    <a href="about.html"   class="nav-link-btn">ℹ️ About</a>
+    <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
+  </div>
+</nav>
+
+<div class="main">
+  <div class="search-hero">
+    <h1>🔍 Search 200 Songs</h1>
+    <p>Find your song across all moods, languages and artists</p>
+  </div>
+
+  <input class="big-search" type="text" id="bigSearch" placeholder="Search song title or artist…" oninput="doSearch(this.value)" autofocus/>
+
+  <div class="tag-filters">
+    <div class="tag on" id="tag-all" onclick="setTagLang('all')">All Languages</div>
+    <div class="tag" id="tag-EN"  onclick="setTagLang('EN')">🎸 English</div>
+    <div class="tag" id="tag-KP"  onclick="setTagLang('KP')">🌸 K-Pop</div>
+  </div>
+
+  <div class="result-count" id="resultCount">Type to search across all 200 songs</div>
+  <div class="songs-list" id="searchResults"></div>
+</div>
+
+<!-- PLAYER BAR -->
+<div class="player-bar" id="playerBar">
+  <div class="pb-left">
+    <div class="pb-cover" id="pbCover">🎵</div>
+    <div class="pb-meta">
+      <div class="pb-title" id="pbTitle">Select a song</div>
+      <div class="pb-artist" id="pbArtist">MoodTune</div>
+    </div>
+  </div>
+  <div class="pb-centre">
+    <div class="pb-controls">
+      <button class="ctrl" onclick="playPrev()">⏮</button>
+      <button class="ctrl ctrl-play" id="ctrlPlay" onclick="togglePlay()">▶</button>
+      <button class="ctrl" onclick="playNext()">⏭</button>
+    </div>
+    <div class="pb-progress">
+      <span class="pb-time" id="timeCur">0:00</span>
+      <div class="progress-track" id="progressTrack" onclick="onSeek(event)">
+        <div class="progress-fill" id="progressFill"></div>
+        <div class="progress-knob" id="progressKnob"></div>
+      </div>
+      <span class="pb-time" id="timeDur">0:00</span>
+    </div>
+  </div>
+  <div class="pb-right">
+    <span style="opacity:.5;font-size:.9rem">🔊</span>
+    <input type="range" min="0" max="100" value="80" class="vol-range" oninput="setVol(this.value)"/>
+  </div>
+</div>
+
+<div id="ytHolder" style="position:fixed;bottom:0;left:0;width:2px;height:2px;opacity:0;pointer-events:none;z-index:-1"></div>
+
+<script src="../js/db.js"></script>
+<script src="../js/player.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/bg.js"></script>
+<script>
+var _searchLang = 'all';
+var _searchResults = [];
+
+var ALL_SONGS = [];
+Object.keys(DB).forEach(function(mood) {
+  DB[mood].forEach(function(s) {
+    ALL_SONGS.push(Object.assign({}, s, {
+      mood: mood,
+      moodLabel: META[mood].label,
+      moodEmoji: META[mood].emoji
+    }));
+  });
+});
+
+var LANG_CLASS = {EN:'lang-en',KP:'lang-kp'};
+var LANG_LABEL = {EN:'English',KP:'K-Pop'};
+
+function setTagLang(lang) {
+  _searchLang = lang;
+
+  ['all','EN','KP'].forEach(function(k) {
+    var el = document.getElementById('tag-'+k);
+    if (el) el.classList.toggle('on', k===lang);
+  });
+
+  doSearch(document.getElementById('bigSearch').value);
+}
+
+function doSearch(q) {
+  q = (q||'').toLowerCase().trim();
+
+  _searchResults = ALL_SONGS.filter(function(s) {
+    var langOk = _searchLang==='all' || s.l===_searchLang;
+    var qOk = !q ||
+      s.t.toLowerCase().includes(q) ||
+      s.a.toLowerCase().includes(q) ||
+      s.mood.includes(q);
+
+    return langOk && qOk;
+  });
+
+  // Remove duplicates
+  var seen = {};
+  _searchResults = _searchResults.filter(function(s) {
+    if (seen[s.id]) return false;
+    seen[s.id] = true;
+    return true;
+  });
+
+  _filtered = _searchResults;
+  _curIdx = -1;
+
+  var count = document.getElementById('resultCount');
+  count.textContent = q
+    ? _searchResults.length + ' results found'
+    : 'Showing all ' + _searchResults.length + ' songs';
+
+  var list = document.getElementById('searchResults');
+
+  if (!_searchResults.length) {
+    list.innerHTML = '<div class="empty-msg">No songs found.</div>';
+    return;
+  }
+
+  var html = '';
+  _searchResults.forEach(function(s, i) {
+    var lc = LANG_CLASS[s.l]||'lang-en';
+    var ll = LANG_LABEL[s.l]||s.l;
+
+    html += '<div class="song-row" onclick="playSongAt('+i+')">' +
+      '<div class="song-num">'+(i+1)+'</div>' +
+      '<div class="song-emoji">'+s.e+'</div>' +
+      '<div class="song-info">' +
+        '<div class="song-title">'+s.t+'</div>' +
+        '<div class="song-artist">'+s.a+'</div>' +
+      '</div>' +
+      '<span class="song-lang '+lc+'">'+ll+'</span>' +
+      '<span class="result-mood-badge">'+s.moodEmoji+' '+s.moodLabel+'</span>' +
+    '</div>';
+  });
+
+  list.innerHTML = html;
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  applyTheme(); initBg(); initNotes(); loadYT();
+  doSearch('');
+});
+</script>
+</body>
+</html>

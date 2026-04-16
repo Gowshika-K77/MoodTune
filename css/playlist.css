@@ -1,0 +1,49 @@
+/* ═══════════════════════════════════════════════════
+   PLAYLIST.CSS — Playlist page styles
+═══════════════════════════════════════════════════ */
+
+.pl-header{margin-bottom:2rem;animation:heroIn .7s both}
+.pl-mood-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.4rem 1.1rem;border-radius:30px;border:1.5px solid;
+  font-size:.85rem;font-weight:600;font-family:var(--fh);
+  margin-bottom:.9rem;
+}
+.pl-title{font-family:var(--fh);font-size:2rem;font-weight:800;margin-bottom:.4rem}
+.pl-sub{color:var(--text2);font-size:.9rem;margin-bottom:1.4rem}
+
+/* Hero banner with mood art */
+.pl-banner{
+  width:100%;height:220px;border-radius:20px;
+  display:flex;align-items:flex-end;
+  padding:1.5rem;margin-bottom:2rem;
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  animation:fadeUp .6s both;
+}
+.pl-banner-emoji{font-size:6rem;position:absolute;right:2rem;top:50%;transform:translateY(-50%);opacity:.25;filter:blur(2px)}
+.pl-banner-content{position:relative;z-index:1}
+.pl-banner h2{font-family:var(--fh);font-size:2.2rem;font-weight:800;color:#fff;margin-bottom:.3rem}
+.pl-banner p{color:rgba(255,255,255,.75);font-size:.9rem}
+.pl-banner-actions{position:relative;z-index:1;margin-top:.8rem;display:flex;gap:.7rem;flex-wrap:wrap}
+.play-all-btn{
+  background:var(--green);color:#000;border:none;
+  padding:.6rem 1.6rem;border-radius:30px;font-family:var(--fh);font-weight:700;
+  font-size:.9rem;cursor:pointer;transition:transform .2s,box-shadow .2s;
+}
+.play-all-btn:hover{transform:scale(1.05);box-shadow:0 6px 24px rgba(29,185,84,.5)}
+.shuffle-btn-hero{
+  background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);
+  padding:.6rem 1.6rem;border-radius:30px;font-family:var(--fh);font-weight:700;
+  font-size:.9rem;cursor:pointer;backdrop-filter:blur(6px);transition:background .2s;
+}
+.shuffle-btn-hero:hover{background:rgba(255,255,255,.25)}
+
+/* Stats row */
+.pl-stats{display:flex;gap:1.5rem;margin-bottom:2rem;flex-wrap:wrap}
+.stat-chip{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:.6rem 1rem;text-align:center;
+}
+.stat-chip .val{font-family:var(--fh);font-size:1.4rem;font-weight:800;color:var(--accent)}
+.stat-chip .lbl{font-size:.68rem;color:var(--text3)}

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>MoodTune – Playlist</title>
+<link rel="stylesheet" href="../css/base.css"/>
+<link rel="stylesheet" href="../css/playlist.css"/>
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
+<canvas id="noteCanvas"></canvas>
+<div id="toast"></div>
+
+<nav class="top-nav">
+  <a class="logo" href="../index.html">
+    <div class="logo-orb">🎵</div>
+    <span class="logo-name">MoodTune</span>
+  </a>
+  <div class="nav-right">
+    <a href="library.html"  class="nav-link-btn">📚 Library</a>
+    <a href="search.html"   class="nav-link-btn">🔍 Search</a>
+    <a href="about.html"    class="nav-link-btn">ℹ️ About</a>
+    <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
+  </div>
+</nav>
+
+<div class="main">
+  <!-- Banner -->
+  <div class="pl-banner" id="plBanner">
+    <div class="pl-banner-emoji" id="plBannerEmoji">😊</div>
+    <div style="position:relative;z-index:1">
+      <h2 id="plBannerTitle">Happy Vibes</h2>
+      <p id="plBannerDesc">25 feel-good songs to brighten your day</p>
+      <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:.9rem">
+        <button class="play-all-btn" onclick="playAll()">▶ Play All</button>
+        <button class="shuffle-btn-hero" onclick="shuffleAndPlay()">🔀 Shuffle</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="pl-header">
+    <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:.8rem">
+      <div class="pl-mood-badge" id="plBadge">😊 Happy</div>
+      <select id="moodSelect" onchange="onMoodChange(this.value)" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:20px;padding:.3rem .85rem;font-family:var(--fb);font-size:.82rem;cursor:pointer;outline:none">
+        <option value="happy">😊 Happy</option>
+        <option value="sad">😢 Sad</option>
+        <option value="angry">😡 Angry</option>
+        <option value="calm">😌 Calm</option>
+        <option value="romantic">❤️ Romantic</option>
+        <option value="nostalgic">🕰️ Nostalgic</option>
+        <option value="energetic">⚡ Energetic</option>
+        <option value="focused">🎯 Focused</option>
+      </select>
+    </div>
+    <h2 class="pl-title" id="plTitle">Your Happy Playlist</h2>
+    <p class="pl-sub"  id="plSub">25 songs</p>
+
+    <!-- Stats -->
+    <div class="pl-stats">
+      <div class="stat-chip"><div class="val" id="statEN">0</div><div class="lbl">English</div></div>
+      <div class="stat-chip"><div class="val" id="statKP">0</div><div class="lbl">K-Pop</div></div>
+      <div class="stat-chip"><div class="val" id="statFR">0</div><div class="lbl">French+</div></div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="pl-toolbar">
+      <div class="search-wrap">
+        <input class="search-input" type="text" id="searchInput" placeholder="🔍 Search songs or artists…" oninput="filterSongs(this.value)"/>
+      </div>
+      <div style="display:flex;gap:.4rem;flex-wrap:wrap">
+        <button class="tool-btn active-filter" id="tab-all" onclick="setLangTab('all')">All</button>
+        <button class="tool-btn" id="tab-EN"   onclick="setLangTab('EN')">🎸 English</button>
+        <button class="tool-btn" id="tab-KP"   onclick="setLangTab('KP')">🌸 K-Pop</button>
+        <button class="tool-btn" id="tab-FR"   onclick="setLangTab('FR')">🥐 French+</button>
+      </div>
+      <a href="../index.html" class="tool-btn">← Moods</a>
+    </div>
+  </div>
+
+  <div class="songs-list" id="songsList"></div>
+</div>
+
+<!-- PLAYER BAR -->
+<div class="player-bar" id="playerBar">
+  <div class="pb-left">
+    <div class="pb-cover" id="pbCover">🎵</div>
+    <div class="pb-meta">
+      <div class="pb-title"  id="pbTitle">Select a song</div>
+      <div class="pb-artist" id="pbArtist">MoodTune</div>
+    </div>
+  </div>
+  <div class="pb-centre">
+    <div class="pb-controls">
+      <button class="ctrl" onclick="playPrev()">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><polygon points="19,20 9,12 19,4"/><rect x="5" y="4" width="2" height="16"/></svg>
+      </button>
+      <button class="ctrl ctrl-play" id="ctrlPlay" onclick="togglePlay()">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><polygon points="5,3 19,12 5,21"/></svg>
+      </button>
+      <button class="ctrl" onclick="playNext()">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><polygon points="5,4 15,12 5,20"/><rect x="17" y="4" width="2" height="16"/></svg>
+      </button>
+    </div>
+    <div class="pb-progress">
+      <span class="pb-time" id="timeCur">0:00</span>
+      <div class="progress-track" id="progressTrack" onclick="onSeek(event)">
+        <div class="progress-fill" id="progressFill"></div>
+        <div class="progress-knob" id="progressKnob"></div>
+      </div>
+      <span class="pb-time" id="timeDur">0:00</span>
+    </div>
+  </div>
+  <div class="pb-right">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" style="opacity:.5"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+    <input type="range" min="0" max="100" value="80" class="vol-range" oninput="setVol(this.value)"/>
+  </div>
+</div>
+
+<script src="../js/db.js"></script>
+<script src="../js/player.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/bg.js"></script>
+<script src="../js/playlist.js"></script>
+</body>
+</html>

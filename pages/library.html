@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>MoodTune – Library</title>
+<link rel="stylesheet" href="../css/base.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,500;12..96,700;12..96,800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+.page-title{font-family:var(--fh);font-size:2rem;font-weight:800;margin-bottom:.4rem;animation:heroIn .7s both}
+.page-sub{color:var(--text2);margin-bottom:2.5rem;animation:fadeUp .7s .1s both}
+.mood-section{margin-bottom:3rem;animation:fadeUp .5s both}
+.mood-section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.mood-section-title{font-family:var(--fh);font-size:1.2rem;font-weight:700;display:flex;align-items:center;gap:.6rem}
+.mood-section-count{font-size:.75rem;color:var(--text3)}
+.view-all-link{font-size:.8rem;color:var(--accent);text-decoration:none;padding:.28rem .8rem;border:1px solid rgba(108,63,245,.3);border-radius:20px;transition:background .2s}
+.view-all-link:hover{background:rgba(108,63,245,.15)}
+.mini-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.mini-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:.9rem 1rem;display:flex;align-items:center;gap:.7rem;
+  cursor:pointer;transition:background .18s,border-color .18s,transform .15s;
+}
+.mini-card:hover{background:var(--surface2);border-color:rgba(108,63,245,.3);transform:translateY(-2px)}
+.mini-card-emoji{font-size:1.5rem;flex-shrink:0}
+.mini-card-info{min-width:0}
+.mini-card-title{font-size:.85rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-card-artist{font-size:.7rem;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-card-lang{font-size:.6rem;padding:.12rem .45rem;border-radius:12px;font-weight:600;margin-top:.2rem;display:inline-block}
+.stats-bar{display:flex;gap:1rem;margin-bottom:3rem;flex-wrap:wrap;animation:fadeUp .6s both}
+.big-stat{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.5rem;flex:1;min-width:120px;text-align:center}
+.big-stat .n{font-family:var(--fh);font-size:2rem;font-weight:800;color:var(--accent)}
+.big-stat .l{font-size:.75rem;color:var(--text3);margin-top:.2rem}
+</style>
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
+<canvas id="noteCanvas"></canvas>
+<div id="toast"></div>
+
+<nav class="top-nav">
+  <a class="logo" href="../index.html">
+    <div class="logo-orb">🎵</div>
+    <span class="logo-name">MoodTune</span>
+  </a>
+  <div class="nav-right">
+    <a href="library.html"  class="nav-link-btn" style="border-color:var(--accent);color:var(--accent)">📚 Library</a>
+    <a href="search.html"   class="nav-link-btn">🔍 Search</a>
+    <a href="about.html"    class="nav-link-btn">ℹ️ About</a>
+    <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
+  </div>
+</nav>
+
+<div class="main">
+  <h1 class="page-title">📚 Music Library</h1>
+  <p class="page-sub">Browse all 200 songs across 8 moods · Tamil · English · K-Pop</p>
+
+  <!-- Stats -->
+  <div class="stats-bar" id="statsBar"></div>
+
+  <!-- Mood sections -->
+  <div id="libraryContent"></div>
+</div>
+
+<!-- PLAYER BAR -->
+<div class="player-bar" id="playerBar">
+  <div class="pb-left">
+    <div class="pb-cover" id="pbCover">🎵</div>
+    <div class="pb-meta">
+      <div class="pb-title" id="pbTitle">Select a song</div>
+      <div class="pb-artist" id="pbArtist">MoodTune</div>
+    </div>
+  </div>
+  <div class="pb-centre">
+    <div class="pb-controls">
+      <button class="ctrl" onclick="playPrev()">⏮</button>
+      <button class="ctrl ctrl-play" id="ctrlPlay" onclick="togglePlay()">▶</button>
+      <button class="ctrl" onclick="playNext()">⏭</button>
+    </div>
+    <div class="pb-progress">
+      <span class="pb-time" id="timeCur">0:00</span>
+      <div class="progress-track" id="progressTrack" onclick="onSeek(event)">
+        <div class="progress-fill" id="progressFill"></div>
+        <div class="progress-knob" id="progressKnob"></div>
+      </div>
+      <span class="pb-time" id="timeDur">0:00</span>
+    </div>
+  </div>
+  <div class="pb-right">
+    <span style="opacity:.5;font-size:.9rem">🔊</span>
+    <input type="range" min="0" max="100" value="80" class="vol-range" oninput="setVol(this.value)"/>
+  </div>
+</div>
+
+<div id="ytHolder" style="position:fixed;bottom:0;left:0;width:2px;height:2px;opacity:0;pointer-events:none;z-index:-1"></div>
+
+<script src="../js/db.js"></script>
+<script src="../js/player.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/bg.js"></script>
+<script>
+var LANG_CLASS = {EN:'lang-en',KP:'lang-kp'};
+var LANG_LABEL = {EN:'English',KP:'K-Pop'};
+
+function playFromLib(mood, localIdx) {
+  _filtered = DB[mood].slice();
+  _curIdx = -1;
+  playSongAt(localIdx);
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  applyTheme(); initBg(); initNotes(); loadYT();
+
+  // Stats bar (NO TAMIL)
+  var total = 0, enTotal = 0, kpTotal = 0;
+
+  Object.keys(DB).forEach(function(m) { 
+    DB[m].forEach(function(s){
+      total++;
+      if(s.l==='EN') enTotal++;
+      else if(s.l==='KP') kpTotal++;
+    });
+  });
+
+  document.getElementById('statsBar').innerHTML =
+    '<div class="big-stat"><div class="n">'+total+'</div><div class="l">Total Songs</div></div>' +
+    '<div class="big-stat"><div class="n">'+enTotal+'</div><div class="l">English</div></div>' +
+    '<div class="big-stat"><div class="n">'+kpTotal+'</div><div class="l">K-Pop</div></div>' +
+    '<div class="big-stat"><div class="n">8</div><div class="l">Moods</div></div>';
+
+  // Build library sections
+  var html = '';
+  Object.keys(DB).forEach(function(mood, mi) {
+    var meta = META[mood];
+    var songs = DB[mood];
+
+    html += '<div class="mood-section" style="animation-delay:'+(mi*.07)+'s">' +
+      '<div class="mood-section-header">' +
+        '<div class="mood-section-title">'+meta.emoji+' '+meta.label+'<span class="mood-section-count">'+songs.length+' songs</span></div>' +
+        '<a href="playlist.html?mood='+mood+'" class="view-all-link">View all →</a>' +
+      '</div>' +
+      '<div class="mini-grid">';
+
+    songs.slice(0, 6).forEach(function(s, i) {
+      var lc = LANG_CLASS[s.l]||'lang-en';
+      var ll = LANG_LABEL[s.l]||s.l;
+
+      html += '<div class="mini-card" onclick="playFromLib(\''+mood+'\','+i+')">' +
+        '<div class="mini-card-emoji">'+s.e+'</div>' +
+        '<div class="mini-card-info">' +
+          '<div class="mini-card-title">'+s.t+'</div>' +
+          '<div class="mini-card-artist">'+s.a+'</div>' +
+          '<span class="mini-card-lang '+lc+'">'+ll+'</span>' +
+        '</div>' +
+      '</div>';
+    });
+
+    html += '</div></div>';
+  });
+
+  document.getElementById('libraryContent').innerHTML = html;
+});
+</script>
+</body>
+</html>
