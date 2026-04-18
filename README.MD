@@ -1,7 +1,7 @@
 # 🎵 MoodTune — Feel the Music
 
 A mood-based music web app with Tamil · English · K-Pop playlists.  
-Spotify-style player, 200 songs, 8 moods, 3 languages.
+Spotify-style player, 80 songs, 8 moods, 3 languages.
 
 ---
 
