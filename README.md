@@ -21,27 +21,30 @@
 This project was designed and developed by **Gowshika K**[cite: 1]. During the development process, **Claude.ai** was utilized for logic assistance and design refinements[cite: 1].
 
 ## Project Structure
+## 📁 Project Structure
+
+```text
 moodtune/
-├── index.html          # Home page (mood selector)
+├── index.html           # Home page (mood selector)
 ├── pages/
-│   ├── playlist.html   # Playlist player page
-│   ├── library.html    # Full library browser
-│   ├── search.html     # Global search
-│   └── about.html      # About page
+│   ├── playlist.html    # Playlist player page
+│   ├── library.html     # Full library browser
+│   ├── search.html      # Global search
+│   └── about.html       # About page
 ├── css/
-│   ├── base.css        # Shared styles (nav, player bar, songs)
-│   ├── home.css        # Mood grid & hero
-│   └── playlist.css    # Playlist page banner styles
+│   ├── base.css         # Shared styles (nav, player bar, songs)
+│   ├── home.css         # Mood grid & hero
+│   └── playlist.css     # Playlist page banner styles
 ├── js/
-│   ├── db.js           # 200-song database
-│   ├── player.js       # YouTube IFrame API player
-│   ├── theme.js        # Dark/Light mode
-│   ├── bg.js           # Canvas animations
-│   ├── home.js         # Home page logic
-│   └── playlist.js     # Playlist page logic
-├── Jenkinsfile         # CI/CD pipeline
-├── nginx.conf          # Web server config
-└── .gitignore          # Git exclusion file
+│   ├── db.js            # 200-song database
+│   ├── player.js        # YouTube IFrame API player
+│   ├── theme.js         # Dark/Light mode
+│   ├── bg.js            # Canvas animations
+│   ├── home.js          # Home page logic
+│   └── playlist.js      # Playlist page logic
+├── Jenkinsfile          # CI/CD pipeline
+├── nginx.conf           # Web server config
+└── .gitignore           # Git exclusion file
 
 ## 👤 Author
 **Gowshika K **
