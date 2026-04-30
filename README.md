@@ -36,7 +36,7 @@ moodtune/
 │   ├── home.css         # Mood grid & hero
 │   └── playlist.css     # Playlist page banner styles
 ├── js/
-│   ├── db.js            # 200-song database
+│   ├── db.js            # 80-song database
 │   ├── player.js        # YouTube IFrame API player
 │   ├── theme.js         # Dark/Light mode
 │   ├── bg.js            # Canvas animations
@@ -45,7 +45,8 @@ moodtune/
 ├── Jenkinsfile          # CI/CD pipeline
 ├── nginx.conf           # Web server config
 └── .gitignore           # Git exclusion file
-
+````
 ## 👤 Author
 **Gowshika K **
 *3rd Year B.E. Computer Science Engineering Student | Anna University*
+*If you liked this project, feel free to give it a ⭐!*
