@@ -1,24 +1,24 @@
 # MoodTune: A Personalized Music Experience
 
 ## Project Overview
-**MoodTune** is a responsive web application designed to match your music with your current vibe[cite: 1]. Developed as a front-end project, it focuses on providing a clean, aesthetic, and user-friendly interface where users can explore music tailored to their mood[cite: 1].
+**MoodTune** is a responsive web application designed to match your music with your current vibe. Developed as a front-end project, it focuses on providing a clean, aesthetic, and user-friendly interface where users can explore music tailored to their mood.
 
 **🌐 Live Demo:** [View MoodTune Website](https://gowshika-k77.github.io/MoodTune/)
 
 ## Key Features
-* **Aesthetic UI/UX:** A modern, visually appealing interface designed for seamless navigation[cite: 1].
-* **Mood-Based Selection:** Users can interact with various mood categories to discover curated musical vibes[cite: 1].
-* **Responsive Design:** Fully optimized for different screen sizes, ensuring a consistent experience on mobile, tablet, and desktop[cite: 1].
-* **Interactive Elements:** Smooth transitions and dynamic updates using JavaScript[cite: 1].
+* **Aesthetic UI/UX:** A modern, visually appealing interface designed for seamless navigation.
+* **Mood-Based Selection:** Users can interact with various mood categories to discover curated musical vibes.
+* **Responsive Design:** Fully optimized for different screen sizes, ensuring a consistent experience on mobile, tablet, and desktop.
+* **Interactive Elements:** Smooth transitions and dynamic updates using JavaScript.
 
 ## Tech Stack
-* **HTML5:** For semantic web structure[cite: 1].
-* **CSS3:** Custom styling, including layouts and animations[cite: 1].
-* **JavaScript:** Logic for interactivity and mood-based filtering[cite: 1].
-* **GitHub Pages:** Hosting for the live version of the site[cite: 1].
+* **HTML5:** For semantic web structure.
+* **CSS3:** Custom styling, including layouts and animations.
+* **JavaScript:** Logic for interactivity and mood-based filtering.
+* **GitHub Pages:** Hosting for the live version of the site.
 
 ## Development
-This project was designed and developed by **Gowshika K**[cite: 1]. During the development process, **Claude.ai** was utilized for logic assistance and design refinements[cite: 1].
+This project was designed and developed by **Gowshika K**. During the development process, **Claude.ai** was utilized for logic assistance and design refinements.
 
 ## Project Structure
 ## 📁 Project Structure
