@@ -47,6 +47,8 @@ moodtune/
 └── .gitignore           # Git exclusion file
 ````
 ## 👤 Author
-**Gowshika K **
-**3rd Year B.E. Computer Science Engineering Student | Anna University*
-**If you liked this project, feel free to give it a ⭐!*
+
+**Gowshika K**  
+3rd Year B.E. Computer Science Engineering Student | Anna University  
+
+⭐ If you liked this project, feel free to give it a star!
